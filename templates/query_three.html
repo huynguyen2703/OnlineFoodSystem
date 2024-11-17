@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title> Query Three Table</title>
+</head>
+<body>
+<section>
+    <h1>
+        Food Online System
+    </h1>
+    <table>
+        <thead>
+        <tr>
+            {% for column in columns %}
+            <th>{{column}}</th>
+            {% endfor %}
+        </tr>
+        </thead>
+        <tbody>
+        {% for query_row in query_three %}
+        <tr>
+            {% for query_column in query_row %}
+            <td>{{query_column if query_column is not none else "N/A"}}</td>
+            {% endfor %}
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</section>
+</body>
+</html>
