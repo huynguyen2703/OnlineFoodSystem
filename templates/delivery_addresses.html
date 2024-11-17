@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Customers Table</title>
+</head>
+<body>
+<section>
+    <h1>
+        Food Online System
+    </h1>
+    <table>
+        <thead>
+        <tr>
+            {% for column in columns %}
+            <th>{{column}}</th>
+            {% endfor %}
+        </tr>
+        </thead>
+        <tbody>
+        {% for delivery_address in delivery_addresses %}
+        <tr>
+            {% for data in delivery_address %}
+            <td>{{data if data is not none else "N/A"}}</td>
+            {% endfor %}
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</section>
+</body>
+</html>
