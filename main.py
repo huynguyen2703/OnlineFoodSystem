@@ -6,22 +6,23 @@ from flask import Flask, render_template, url_for, redirect
 from flask import request
 import os
 import mysql.connector
+import requests
 
 # Create flask application to manage routes
 app = Flask(__name__)
 
 # Define database configurations to connect to MySQL database
-server_name = your_server
-username = your_username
-password = your_password
-db_name = your_db_name
+server_name = os.environ['SERVER_NAME']
+username = os.environ['USER_NAME']
+password = os.environ['PASSWORD']
+db_name = os.environ['DB_NAME']
 
 
 # -----------------------------------------------FUNCTIONALITIES SECTION------------------------------------------------
 
 
 # select function created for reusable purpose
-def select(query: str, params=None):
+def reusable(query: str, params=None):
     """
         Executes a SELECT query and returns the results.
         :param query: The SELECT SQL query as a string.
@@ -74,7 +75,7 @@ def landing_page():
 @app.route('/restaurants.html')
 def restaurants():
     query = 'SELECT * FROM RESTAURANTS;'
-    restaurants_columns, restaurants_table = select(query)
+    restaurants_columns, restaurants_table = reusable(query)
     return render_template("restaurants.html", restaurants=restaurants_table, columns=restaurants_columns)
 
 
@@ -82,7 +83,7 @@ def restaurants():
 @app.route('/shippers.html')
 def shippers():
     query = 'SELECT * FROM SHIPPERS;'
-    shippers_columns, shippers_table = select(query)
+    shippers_columns, shippers_table = reusable(query)
     return render_template("shippers.html", shippers=shippers_table, columns=shippers_columns)
 
 
@@ -90,7 +91,7 @@ def shippers():
 @app.route('/customers.html')
 def customers():
     query = 'SELECT * FROM CUSTOMERS;'
-    customers_columns, customers_table = select(query)
+    customers_columns, customers_table = reusable(query)
     return render_template("customers.html", customers=customers_table, columns=customers_columns)
 
 
@@ -98,7 +99,7 @@ def customers():
 @app.route('/delivery_addresses.html')
 def delivery_addresses():
     query = 'SELECT * FROM DELIVERY_ADDRESSES;'
-    delivery_addresses_columns, delivery_addresses_table = select(query)
+    delivery_addresses_columns, delivery_addresses_table = reusable(query)
     return render_template("delivery_addresses.html", delivery_addresses=delivery_addresses_table,
                            columns=delivery_addresses_columns)
 
@@ -107,7 +108,7 @@ def delivery_addresses():
 @app.route('/customer_addresses.html')
 def customer_addresses():
     query = 'SELECT * FROM CUSTOMER_ADDRESSES;'
-    customer_addresses_columns, customer_addresses_table = select(query)
+    customer_addresses_columns, customer_addresses_table = reusable(query)
     return render_template("customer_addresses.html", customer_addresses=customer_addresses_table,
                            columns=customer_addresses_columns)
 
@@ -116,7 +117,7 @@ def customer_addresses():
 @app.route('/orders.html')
 def orders():
     query = 'SELECT * FROM ORDERS;'
-    orders_columns, orders_table = select(query)
+    orders_columns, orders_table = reusable(query)
     return render_template("orders.html", orders=orders_table,
                            columns=orders_columns)
 
@@ -128,7 +129,7 @@ def orders():
 @app.route('/query_one.html')
 def query_one():
     query = "SELECT * FROM CUSTOMERS NATURAL JOIN ORDERS;"
-    query_one_columns, query_one_table = select(query)
+    query_one_columns, query_one_table = reusable(query)
     return render_template("query_one.html", query_one=query_one_table,
                            columns=query_one_columns)
 
@@ -138,7 +139,7 @@ def query_one():
 def query_two():
     query = """SELECT CUSTOMER_ID, SUM(ORDER_PRICE) AS 'TOTAL_PRICE', COUNT(ORDER_ID) AS 
                'TOTAL_ORDERS' FROM ORDERS GROUP BY CUSTOMER_ID;"""
-    query_two_columns, query_two_table = select(query)
+    query_two_columns, query_two_table = reusable(query)
     return render_template("query_two.html", query_two=query_two_table,
                            columns=query_two_columns)
 
@@ -147,7 +148,7 @@ def query_two():
 @app.route('/query_three.html')
 def query_three():
     query = "SELECT * FROM ORDERS WHERE ORDER_PRICE > (SELECT AVG(ORDER_PRICE) FROM ORDERS);"
-    query_three_columns, query_three_table = select(query)
+    query_three_columns, query_three_table = reusable(query)
     return render_template("query_three.html", query_three=query_three_table,
                            columns=query_three_columns)
 
@@ -159,7 +160,7 @@ def query_four():
     'AVERAGE_RATING' FROM ORDERS JOIN RESTAURANTS ON 
     ORDERS.RESTAURANT_NUM = RESTAURANTS.RESTAURANT_NUM GROUP BY RESTAURANTS.RESTAURANT_NUM,RESTAURANTS.RESTAURANT_NAME
     HAVING COUNT(ORDERS.ORDER_ID) > 5;"""
-    query_four_columns, query_four_table = select(query)
+    query_four_columns, query_four_table = reusable(query)
     return render_template("query_four.html", query_four=query_four_table,
                            columns=query_four_columns)
 
@@ -174,12 +175,28 @@ def query_five():
                FROM CUSTOMERS LEFT JOIN CUSTOMER_ADDRESSES ON CUSTOMERS.CUSTOMER_ID = CUSTOMER_ADDRESSES.CUSTOMER_ID
                LEFT JOIN DELIVERY_ADDRESSES ON 
                CUSTOMER_ADDRESSES.DELIVERY_ADDRESS_NUM = DELIVERY_ADDRESSES.DELIVERY_ADDRESS_NUM;"""
-    query_five_columns, query_five_table = select(query)
+    query_five_columns, query_five_table = reusable(query)
     return render_template("query_five.html", query_five=query_five_table,
                            columns=query_five_columns)
 
 
-# -----------------------------------------------------------------------------------------------------------------------
+# --------------------------------------------------AD_HOC QUERY SECTION------------------------------------------------
+
+@app.route('/adhoc.html', methods=['POST'])
+def submit_query():
+    user_input = request.form['user_input']
+
+    user_query = user_input.strip()
+    try:
+        columns, results = reusable(user_query)
+
+        return render_template("adhoc.html", columns=columns, adhoc_query=results)
+    except Exception as e:
+        return render_template("adhoc.html", str(e))
+
+
+# ----------------------------------------------------------------------------------------------------------------------
+
 # Run flask application
 if __name__ == "__main__":
     app.run(debug=False)
