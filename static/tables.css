@@ -1,0 +1,46 @@
+.table-center {
+    border-collapse: collapse;
+    font-size: 0.9em;
+    font-family: sans-serif;
+    min-width: 400px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+    border: 4px solid #009879;
+    border-radius: 8px;
+    background-color: #d4eae0;
+    max-width: 100%;
+    margin: 200px auto 25px;
+
+}
+
+.table-center thead tr {
+    background-color: #009879;
+    color: #ffffff;
+    text-align: left;
+}
+
+.table-center th,
+.table-center td {
+    padding: 12px 15px;
+}
+
+.table-center tbody tr:hover {
+    background-color: cornsilk;
+}
+
+
+.table-center {
+    margin-left: auto;
+    margin-right: auto;
+}
+
+body {
+    display: contents;
+    justify-content: center;
+    align-items: center;
+    height: 150vh;
+}
+
+h1 {
+    text-align: center;
+}
+

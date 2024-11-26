@@ -22,13 +22,14 @@ db_name = os.environ['DB_NAME']
 
 
 # select function created for reusable purpose
-def reusable(query: str, params=None):
+def reusable(query: str):
     """
         Executes a SELECT query and returns the results.
         :param query: The SELECT SQL query as a string.
-        :param params: Optional tuple of parameters for the query.
         :return: List of tuples containing the query results.
     """
+    connection = None
+    cursor = None
     try:
         connection = mysql.connector.connect(
             host=server_name,
