@@ -79,7 +79,6 @@
     transform: scale(1.05); /* Slightly larger on hover */
     transition: transform 0.3s ease-in-out, background-color 0.3s ease-in-out; /* Smooth transition */
 }
-
 /* Rounded bottom corners for the last row */
 .table-center tr:last-child td:first-child {
     border-bottom-left-radius: 12px;
