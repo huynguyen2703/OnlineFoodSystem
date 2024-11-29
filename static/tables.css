@@ -3,44 +3,161 @@
     font-size: 0.9em;
     font-family: sans-serif;
     min-width: 400px;
-    box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5); /* More visible shadow */
     border: 4px solid #009879;
-    border-radius: 8px;
+    border-radius: 12px;
     background-color: #d4eae0;
     max-width: 100%;
-    margin: 200px auto 25px;
+    margin: 100px auto 25px;
+    overflow: hidden;
+    position: relative;
+    opacity: 0;
+    animation: fadeIn 1s forwards, slideUp 0.8s ease-out forwards; /* Animation added */
+}
 
+/* Fade-in and slide-up animation for table */
+@keyframes fadeIn {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+@keyframes slideUp {
+    0% {
+        transform: translateY(20px);
+    }
+    100% {
+        transform: translateY(0);
+    }
+}
+
+/* Glowing effect for the table */
+.table-center::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: -1;
+    border-radius: 12px;
+    animation: glowing 2s ease-in-out infinite alternate;
+}
+
+/* Glowing animation */
+@keyframes glowing {
+    0% {
+        box-shadow: 0 0 20px rgba(255, 165, 0, 0.7), 0 0 40px rgba(0, 255, 255, 0.6);
+    }
+    100% {
+        box-shadow: 0 0 30px rgba(255, 165, 0, 1), 0 0 60px rgba(0, 255, 255, 0.8);
+    }
 }
 
 .table-center thead tr {
     background-color: #009879;
     color: #ffffff;
     text-align: left;
+    border-top-left-radius: 12px;
+    border-top-right-radius: 12px;
 }
 
 .table-center th,
 .table-center td {
     padding: 12px 15px;
+    text-align: center;
+    border: 2px solid #009879;
+    border-radius: 6px;
 }
 
+/* Hover effect with scaling and color change */
 .table-center tbody tr:hover {
     background-color: cornsilk;
+    transform: scale(1.05); /* Slightly larger on hover */
+    transition: transform 0.3s ease-in-out, background-color 0.3s ease-in-out; /* Smooth transition */
 }
 
+/* Rounded bottom corners for the last row */
+.table-center tr:last-child td:first-child {
+    border-bottom-left-radius: 12px;
+}
 
-.table-center {
-    margin-left: auto;
-    margin-right: auto;
+.table-center tr:last-child td:last-child {
+    border-bottom-right-radius: 12px;
 }
 
 body {
-    display: contents;
+    display: flex;
     justify-content: center;
     align-items: center;
-    height: 150vh;
+    height: 100vh;
+    background: url('images/tables_background.jpg') no-repeat center;
+    background-size: 120%;
+    margin: 0;
 }
 
 h1 {
     text-align: center;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 100px; /* Large size for emphasis */
+    font-style: unset;
+    font-weight: 900; /* Bold weight for stronger impact */
+    color: cornsilk;
+    line-height: 1.2; /* Adjust line height for better vertical spacing */
+    text-transform: uppercase; /* Make text uppercase for added emphasis */
+    letter-spacing: 5px; /* Add space between letters for a cleaner look */
+    margin-top: 50px; /* Add top margin for better positioning */
+
+    /* Text shadow for a 3D effect */
+    text-shadow: 3px 3px 5px rgba(0, 0, 0, 0.8), 0 0 15px rgba(255, 255, 255, 0.7);
 }
+
+/* Keyframe animation for a glowing effect */
+@keyframes glowing {
+    0% {
+        text-shadow: 0 0 20px rgba(255, 255, 255, 1), 0 0 30px rgba(255, 255, 255, 0.8);
+        box-shadow: 0 0 20px rgba(255, 165, 0, 0.7), 0 0 40px rgba(0, 255, 255, 0.6);
+    }
+    100% {
+        text-shadow: 0 0 30px rgba(255, 255, 255, 1), 0 0 40px rgba(255, 255, 255, 0.8);
+        box-shadow: 0 0 30px rgba(255, 165, 0, 1), 0 0 50px rgba(0, 255, 255, 0.8);
+    }
+}
+
+
+#restaurant {
+    width: 80%;
+    table-layout: fixed;
+    border-collapse: collapse;
+    font-size: 14px;
+    border: 2px;
+}
+
+#restaurant th, #restaurant td {
+    padding: 5px;
+    word-wrap: break-word;
+    word-break: break-word;
+    white-space: normal;
+    overflow: hidden;
+}
+
+#query-one {
+    width: 80%;
+    table-layout: fixed;
+    border-collapse: collapse;
+    font-size: 12px;
+    border: 2px;
+}
+
+#query-one th, #query-one td {
+    padding: 5px;
+    word-wrap: break-word;
+    word-break: break-word;
+    white-space: normal;
+    overflow: hidden;
+}
+
 
