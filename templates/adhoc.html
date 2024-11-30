@@ -3,12 +3,25 @@
 <head>
     <meta charset="UTF-8">
     <title> Adhoc Query</title>
+    <link rel="stylesheet" href="/static/tables.css?">
 </head>
 <body>
 <section>
     <h1>
         Food Online System
     </h1>
+    <!-- Error Message -->
+    {% if error %}
+    <div style="color: red;">Error : {{ error }}</div>
+    {% endif %}
+
+    <!-- Success Message -->
+    {% if success %}
+    <div style="color: green;">{{ success }}</div>
+    {% endif %}
+
+    <!-- Display Query Results -->
+    {% if columns and adhoc_query %}
     <table>
         <thead>
         <tr>
@@ -27,6 +40,7 @@
         {% endfor %}
         </tbody>
     </table>
+    {% endif %}
 </section>
 </body>
 </html>
