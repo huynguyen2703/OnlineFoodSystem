@@ -6,16 +6,25 @@ from flask import Flask, render_template, url_for, redirect
 from flask import request
 import os
 import mysql.connector
+from mysql.connector import errorcode
+import sqlparse
 import requests
+import logging
+import re
 
 # Create flask application to manage routes
 app = Flask(__name__)
 
 # Define database configurations to connect to MySQL database
-server_name = os.environ['SERVER_NAME']
-username = os.environ['USER_NAME']
-password = os.environ['PASSWORD']
-db_name = os.environ['DB_NAME']
+# server_name = os.environ['SERVER_NAME']
+# username = os.environ['USER_NAME']
+# password = os.environ['PASSWORD']
+# db_name = os.environ['DB_NAME']
+
+server_name = '127.0.0.1'
+username = 'root'
+password = 'SSsoulknight2703'
+db_name = 'Milestone3'
 
 
 # -----------------------------------------------FUNCTIONALITIES SECTION------------------------------------------------
@@ -43,11 +52,15 @@ def reusable(query: str):
 
         cursor.execute(query)
 
-        columns = [column[0] for column in cursor.description]
+        if query.strip().upper().startswith('SELECT'):
+            columns = [column[0] for column in cursor.description]
 
-        results = cursor.fetchall()
+            results = cursor.fetchall()
 
-        return columns, results
+            return columns, results
+        else:
+            connection.commit()
+            return cursor.rowcount
 
     except mysql.connector.Error as err:
         if err.errno == errorcode.ER_ACCESS_DENIED_ERROR:
@@ -182,18 +195,77 @@ def query_five():
 
 
 # --------------------------------------------------AD_HOC QUERY SECTION------------------------------------------------
-
-@app.route('/adhoc.html', methods=['POST'])
-def submit_query():
-    user_input = request.form['user_input']
-
-    user_query = user_input.strip()
+def validate_query(query: str) -> bool:
     try:
-        columns, results = reusable(user_query)
+        # Step 1: Remove single-line and multi-line comments
+        query = query.strip()  # Remove leading/trailing spaces
+        query = re.sub(r'--.*$', '', query, flags=re.MULTILINE)  # Remove single-line comments
+        query = re.sub(r'/\*.*?\*/', '', query, flags=re.DOTALL)  # Remove multi-line comments
 
-        return render_template("adhoc.html", columns=columns, adhoc_query=results)
+        query = query.strip()  # Strip spaces again after comment removal
+
+        # Step 2: Check if the query is empty after cleaning
+        if not query:
+            return False
+
+        # Step 3: Parse the cleaned query using sqlparse
+        parsed_query = sqlparse.parse(query)
+
+        # Step 4: Check if the parsed query has valid tokens
+        if not parsed_query or not parsed_query[0].tokens:
+            return False
+
+        # Step 5: Define the valid SQL keywords
+        sql_keywords = ['SELECT', 'INSERT', 'CREATE', 'UPDATE', 'DELETE', 'DROP']
+
+        # Step 6: Get the first meaningful token (strip out irrelevant tokens)
+        # Skip any non-SQL tokens such as whitespaces
+        for token in parsed_query[0].tokens:
+            if token.value.strip():  # First non-empty token
+                first_token = token
+                break
+        else:
+            return False  # No valid tokens found
+
+        # Step 7: Check if the first token is one of the valid SQL keywords (case-insensitive)
+        if first_token.value.strip().upper() not in sql_keywords:
+            return False
+
+        return True
+
+    except sqlparse.exceptions.SQLParseError as e:
+        logging.error(f"SQLParseError: {e}")
+        return False
+    except IndexError as e:
+        logging.error(f"IndexError: {e}")
+        return False
     except Exception as e:
-        return render_template("adhoc.html", str(e))
+        logging.error(f"Unexpected error: {e}")
+        return False
+
+
+@app.route('/adhoc.html', methods=['GET', 'POST'])
+def submit_query():
+    error_message = None
+    success_message = None
+    columns = []
+    results = []
+    if request.method == 'POST':
+        user_input = request.form['user_input']
+        user_query = user_input.strip()
+
+        if not validate_query(user_query):
+            error_message = "Invalid SQL query. Please try again."
+        else:
+            try:
+                if user_query.upper().startswith('SELECT'):
+                    columns, results = reusable(user_query)
+                else:
+                    reusable(user_query)
+                success_message = "Query executed successfully"
+            except Exception as e:
+                error_message = f"An error occurred: {str(e)}"
+    return render_template("adhoc.html", columns=columns, adhoc_query=results, success=success_message, error=error_message)
 
 
 # ----------------------------------------------------------------------------------------------------------------------
