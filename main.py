@@ -23,8 +23,8 @@ app = Flask(__name__)
 
 server_name = '127.0.0.1'
 username = 'root'
-password = 'SSsoulknight2703'
-db_name = 'Milestone3'
+password = os.environ['MY_PASSWORD']
+db_name = os.environ['MY_DB']
 
 
 # -----------------------------------------------FUNCTIONALITIES SECTION------------------------------------------------
