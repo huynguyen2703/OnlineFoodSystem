@@ -1,72 +1,345 @@
-table {
-    border-collapse: separate;
-    margin: 25px 0;
-    font-size: 0.9em;
-    font-family: sans-serif;
-    min-width: 400px;
-    box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
-    border-radius: 6px;
-    overflow: visible;
-}
-
-thead tr {
-    background-color: #009879;
-    color: #ffffff;
-    text-align: left;
-}
-
-th, td {
-    padding: 12px 15px;
-    border: None;
-    border-radius: 10px;
-}
-
-tbody tr {
-    border-bottom: 1px solid #dddddd;
-}
-
-tbody tr:nth-of-type(even) {
-    background-color: #f3f3f3;
-}
-
-td:first-child, th-first-child {
-    border-left: None;
-}
-
-.clear {
-    justify-content: center;
-}
-
-.submit {
-    justify-content: center;
-}
-
-input[type="reset"],
-input[type="submit"] {
-    padding: 10px 20px;
-    border-radius: 5px;
-    border: none;
-    background-color: #009879;
-    color: #ffffff;
-    font-size: 1em;
-    cursor: pointer;
-}
-
-input[type="reset"]:hover,
-input[type="submit"]:hover {
-    background-color: #007f63;
-}
-
-td {
+h1 {
     text-align: center;
-    vertical-align: middle;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 100px; /* Large size for emphasis */
+    font-style: unset;
+    font-weight: 900; /* Bold weight for stronger impact */
+    color: #FFD700; /* Bright golden yellow */
+    line-height: 1.2; /* Adjust line height for better vertical spacing */
+    text-transform: uppercase; /* Make text uppercase for added emphasis */
+    letter-spacing: 5px; /* Add space between letters for a cleaner look */
+    margin-top: 50px; /* Add top margin for better positioning */
+
+    /* Text shadow for a sharper yellowish 3D effect */
+    text-shadow: 1px 1px 1px rgba(255, 215, 0, 0.7), 0 0 10px rgba(255, 255, 0, 0.7);
 }
 
-tr:last-child {
-    background-color: darkseagreen;
+
+body {
+    background-color: chocolate; /* Background color */
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column; /* Stack items vertically */
+    align-items: center; /* Center content horizontally */
+    justify-content: flex-start; /* Align items at the top */
+    height: 100vh;
 }
 
+.members {
+    text-align: center;
+    font-family: Trebuchet-MS sans-serif;
+    font-size: 20px;
+    font-style: unset;
+    font-weight: bold;
+    color: rgba(0, 0, 0, 0.79);
+    margin-top: 20px; /* Add spacing below title */
+}
 
+.hole-box {
+    width: 80%; /* Set width to a long rectangle */
+    height: 150px; /* Make the box slightly shorter */
+    background-color: #FFDEAD; /* Warm cream color for food-related theme */
+    border-radius: 25px;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1); /* Light shadow for a soft effect */
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    margin-top: 30px;
+    gap: 100px; /* Adds space between the team member boxes */
+}
 
+.hole-box::before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.15); /* Lighter shadow effect */
+    border-radius: 50%;
+    box-shadow: inset 0 0 15px rgba(0, 0, 0, 0.3);
+    z-index: -1;
+}
 
+.team-member {
+    text-align: center;
+    font-size: 24px;
+    font-weight: 700;
+    color: #7A4F24; /* Warm brown color for text */
+    background-color: #F4A261; /* Light orange color for the member boxes */
+    border: 1px solid #E76F51; /* Darker orange for borders */
+    border-radius: 15px;
+    padding: 10px 20px; /* Add some padding for better spacing */
+    box-sizing: border-box;
+}
 
+.team-member:nth-child(odd) {
+    background-color: #F6A82C; /* Slightly darker for contrast */
+}
+
+.team-member:nth-child(even) {
+    background-color: #F4A261; /* Keep same as default */
+}
+
+/* Main Box with Rounded Corners */
+.main-box {
+    width: 80%;
+    width: 80%;
+    margin: 20px auto;
+    padding: 30px;
+    background-color: #fff;
+    border-radius: 15px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Each Section with Spacing and Layout */
+.section {
+    margin-bottom: 30px;
+}
+
+.section:last-child {
+    margin-bottom: 0;
+}
+
+/* Box for Each Content Block */
+.box {
+    background-color: #f9f9f9;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Styling for H2 Headers */
+.box h2 {
+    font-size: 22px;
+    color: #333;
+    margin-bottom: 15px;
+}
+
+/* Relations Buttons Section */
+.relations-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    justify-content: center;
+}
+
+.relation-button {
+    background-color: #FF5722;
+    color: white;
+    font-size: 16px;
+    font-weight: bold;
+    padding: 15px 25px;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    width: 200px;
+    text-align: center;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.3s ease;
+}
+
+.relation-button a {
+    text-decoration: none;
+    color: white;
+    display: block;
+}
+
+.relation-button:hover {
+    background-color: #e64a19;
+}
+
+/* Styling for Ordered Lists in Queries Section */
+ol {
+    margin-left: 20px;
+}
+
+ol li {
+    margin-bottom: 10px;
+    font-size: 16px;
+}
+
+ol li a {
+    color: #FF5722;
+    text-decoration: none;
+}
+
+ol li a:hover {
+    text-decoration: underline;
+}
+
+/* SQL Input and Buttons */
+.sql-form {
+    margin-bottom: 20px;
+}
+
+.sql-form label {
+    font-size: 16px;
+    margin-bottom: 8px;
+}
+
+.sql-form input {
+    width: 100%;
+    padding: 12px;
+    font-size: 16px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    margin-top: 5px;
+    box-sizing: border-box;
+}
+
+.sql-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+}
+
+.clear-button, .submit-button {
+    padding: 12px 20px;
+    font-size: 16px;
+    border-radius: 8px;
+    background-color: #FF5722;
+    color: white;
+    border: none;
+    cursor: pointer;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.clear-button:hover, .submit-button:hover {
+    background-color: #e64a19;
+}
+
+/* Styling for the main queries section */
+.queries-row {
+    display: flex;
+    justify-content: center; /* Center all items horizontally */
+    align-items: center; /* Center items vertically */
+    gap: 20px; /* Add space between query items */
+    overflow-x: auto; /* Add horizontal scroll if the items exceed the width */
+    padding: 20px; /* Add some padding for spacing */
+}
+
+/* Individual query boxes */
+.query-item {
+    display: flex;
+    flex-direction: column; /* Stack button and description */
+    align-items: center; /* Center contents horizontally */
+    justify-content: space-between; /* Space out button and description */
+    text-align: center;
+    flex: 0 0 200px; /* Fixed width for all boxes */
+    height: 250px; /* Ensure uniform height */
+    background-color: #fff8dc; /* Matches chocolate theme */
+    border-radius: 15px; /* Rounded corners */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Subtle shadow */
+    padding: 15px;
+    margin: auto; /* Center item within available space */
+}
+
+/* Button styling */
+.query-item .query-button {
+    background-color: #ffa07a; /* Light orange button color */
+    color: #fff;
+    border: none;
+    border-radius: 10px;
+    padding: 10px 15px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: bold;
+    width: 100%; /* Full-width button */
+    text-align: center;
+    transition: all 0.3s ease;
+}
+
+.query-item .query-button a {
+    text-decoration: none;
+    color: inherit;
+}
+
+.query-item .query-button:hover {
+    background-color: #ff6347; /* Darker orange on hover */
+}
+
+/* Description box styling */
+.query-item .query-description {
+    margin-top: 10px;
+    font-size: 20px;
+    font-weight: bold;
+    color: #333;
+    padding: 5px;
+    background-color: #f0e68c; /* Light yellow for descriptions */
+    border-radius: 10px;
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
+    width: 100%; /* Match the button width */
+    flex-grow: 1; /* Expands to fill remaining space */
+    overflow-y: auto; /* Handle overflow for lengthy descriptions */
+}
+
+.section-title {
+    font-family: 'Arial', sans-serif;
+    font-weight: bold;
+    font-size: 28px; /* Bigger than normal text */
+    text-transform: uppercase; /* Make titles stand out */
+    text-align: center; /* Center-align titles */
+    margin-bottom: 15px; /* Add spacing below titles */
+    letter-spacing: 2px; /* Add spacing between letters */
+    text-shadow: 2px 2px 3px rgba(0, 0, 0, 0.3); /* Subtle shadow for depth */
+}
+
+/* Specific styles for each section */
+.relations-title {
+    color: #ff4500;
+    padding: 10px;
+}
+
+.queries-title {
+    color: #ff8c00;
+    padding: 10px;
+}
+
+.adhoc-title {
+    color: #daa520;
+    padding: 10px;
+}
+
+/* Styling the box wrapping the Relations section */
+.relations-box {
+    background-color: #ffefd5; /* Pale goldenrod */
+    border: 2px solid #ff4500; /* Orange-red border */
+    border-radius: 20px; /* Smooth corners */
+    padding: 20px;
+    margin: 20px auto;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Subtle shadow */
+    width: 90%; /* Adjust width as needed */
+}
+
+/* Styling the box wrapping the Queries section */
+.queries-box {
+    background-color: #ffe4b5; /* Moccasin */
+    border: 2px solid #ff8c00; /* Dark orange border */
+    border-radius: 20px;
+    padding: 20px;
+    margin: 20px auto;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    width: 90%;
+}
+
+/* Styling the box wrapping the Ad-hoc Query section */
+.adhoc-box {
+    background-color: #fafad2; /* Light goldenrod yellow */
+    border: 2px solid #daa520; /* Goldenrod border */
+    border-radius: 20px;
+    padding: 20px;
+    margin: 20px auto;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    width: 90%;
+}
+
+.instruction {
+    font-size: medium;
+    font-weight: bold;
+    padding: 10px;
+}
