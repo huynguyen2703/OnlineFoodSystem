@@ -10,24 +10,27 @@
     <h1>
         Food Online System
     </h1>
-    <table class="table-center" id="query-one">
-        <thead>
-        <tr>
-            {% for column in columns %}
-            <th>{{column}}</th>
+    <div class="table-container">
+
+        <table class="table-center" id="query-one">
+            <thead>
+            <tr>
+                {% for column in columns %}
+                <th>{{column}}</th>
+                {% endfor %}
+            </tr>
+            </thead>
+            <tbody>
+            {% for query_row in query_one %}
+            <tr>
+                {% for query_column in query_row %}
+                <td>{{query_column if query_column is not none else "N/A"}}</td>
+                {% endfor %}
+            </tr>
             {% endfor %}
-        </tr>
-        </thead>
-        <tbody>
-        {% for query_row in query_one %}
-        <tr>
-            {% for query_column in query_row %}
-            <td>{{query_column if query_column is not none else "N/A"}}</td>
-            {% endfor %}
-        </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+            </tbody>
+        </table>
+    </div>
 </section>
 </body>
 </html>
