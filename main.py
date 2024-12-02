@@ -16,15 +16,15 @@ import re
 app = Flask(__name__)
 
 # Define database configurations to connect to MySQL database
-server_name = os.environ['SERVER_NAME']
-username = os.environ['USER_NAME']
-password = os.environ['PASSWORD']
-db_name = os.environ['DB_NAME']
+# server_name = os.environ['SERVER_NAME']
+# username = os.environ['USER_NAME']
+# password = os.environ['PASSWORD']
+# db_name = os.environ['DB_NAME']
 
-# server_name = '127.0.0.1'
-# username = 'root'
-# password = os.environ['MY_PASSWORD']
-# db_name = os.environ['MY_DB']
+server_name = '127.0.0.1'
+username = 'root'
+password = os.environ['MY_PASSWORD']
+db_name = os.environ['MY_DB']
 
 
 # -----------------------------------------------FUNCTIONALITIES SECTION------------------------------------------------
