@@ -2,32 +2,34 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Customer Addresses Table</title>
     <link rel="stylesheet" href="/static/tables.css?">
 </head>
 <body>
 <section>
-    <h1>
-        Food Online System
-    </h1>
-    <table class="table-center">
-        <thead>
-        <tr>
-            {% for column in columns %}
-            <th>{{column}}</th>
-            {% endfor %}
-        </tr>
-        </thead>
-        <tbody>
-        {% for customer_address in customer_addresses %}
-        <tr>
-            {% for data in customer_address %}
-            <td>{{data if data is not none else "N/A"}}</td>
-            {% endfor %}
-        </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+    <h1>Food Online System</h1>
+    <!-- Add scrolling container -->
+    <div class="table-container">
+        <table class="table-center">
+            <thead>
+                <tr>
+                    {% for column in columns %}
+                    <th>{{ column }}</th>
+                    {% endfor %}
+                </tr>
+            </thead>
+            <tbody>
+                {% for customer_address in customer_addresses %}
+                <tr>
+                    {% for data in customer_address %}
+                    <td>{{ data if data is not none else "N/A" }}</td>
+                    {% endfor %}
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
 </section>
 </body>
 </html>
