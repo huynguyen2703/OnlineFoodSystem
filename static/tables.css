@@ -160,3 +160,19 @@ h1 {
 }
 
 
+.table-container {
+    max-height: 500px; /* Set max height for the table container */
+    overflow-y: auto; /* Add vertical scroll */
+    margin: auto; /* Center the container */
+}
+
+/* Sticky header styling */
+.table-center thead {
+    position: sticky; /* Stick the header to the top */
+    top: 0; /* Header remains at the top of the scrollable area */
+    z-index: 10; /* Ensure the header stays above table rows */
+    background-color: #009879; /* Keep header background distinct */
+    color: #ffffff; /* Ensure header text is readable */
+}
+
+
