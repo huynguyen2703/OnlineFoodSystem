@@ -175,4 +175,34 @@ h1 {
     color: #ffffff; /* Ensure header text is readable */
 }
 
+.failed-message {
+    color: #f63131;
+    text-align: center;
+    font-family: "Sinhala Sangam MN", sans-serif;
+    font-size: xxx-large;
+    font-weight: bolder;
+    text-shadow: crimson;
+    border: 2px solid #f63131; /* Solid border */
+    background-color: cornsilk; /* Light red background */
+    padding: 15px; /* Space inside the box */
+    margin: 20px auto; /* Center the box */
+    width: fit-content; /* Adjust width to content */
+    box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.1); /* Embedded look with inner shadow */
+}
+
+.success-message {
+    color: green;
+    text-align: center;
+    font-family: "Sinhala Sangam MN", sans-serif;
+    font-size: xxx-large;
+    font-weight: bolder;
+    text-shadow: darkolivegreen;
+    border: 2px solid green; /* Solid border */
+    background-color: cornsilk; /* Light green background */
+    padding: 15px; /* Space inside the box */
+    margin: 20px auto; /* Center the box */
+    width: fit-content; /* Adjust width to content */
+    box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.1); /* Embedded look with inner shadow */
+}
+
 

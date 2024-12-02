@@ -12,34 +12,36 @@
     </h1>
     <!-- Error Message -->
     {% if error %}
-    <div style="color: red;">Error : {{ error }}</div>
+    <div class="failed-message">Error : {{ error }}</div>
     {% endif %}
 
     <!-- Success Message -->
     {% if success %}
-    <div style="color: green;">{{ success }}</div>
+    <div class="success-message">{{ success }}</div>
     {% endif %}
 
     <!-- Display Query Results -->
     {% if columns and adhoc_query %}
-    <table>
-        <thead>
-        <tr>
-            {% for column in columns %}
-            <th>{{column}}</th>
+    <div class="table-container">
+        <table class="table-center">
+            <thead>
+            <tr>
+                {% for column in columns %}
+                <th>{{column}}</th>
+                {% endfor %}
+            </tr>
+            </thead>
+            <tbody>
+            {% for query_row in adhoc_query %}
+            <tr>
+                {% for query_column in query_row %}
+                <td>{{query_column if query_column is not none else "N/A"}}</td>
+                {% endfor %}
+            </tr>
             {% endfor %}
-        </tr>
-        </thead>
-        <tbody>
-        {% for query_row in adhoc_query %}
-        <tr>
-            {% for query_column in query_row %}
-            <td>{{query_column if query_column is not none else "N/A"}}</td>
-            {% endfor %}
-        </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+            </tbody>
+        </table>
+    </div>
     {% endif %}
 </section>
 </body>
