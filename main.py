@@ -78,7 +78,7 @@ def reusable(query: str):
 
 
 # Our main page
-@app.route('https://css1.seattleu.edu/~hnguyen37/templates/food_online_system.html')
+@app.route('/food_online_system.html')
 def landing_page():
     return render_template("food_online_system.html")
 
@@ -86,7 +86,7 @@ def landing_page():
 # -----------------------------------------------DISPLAY ENTITIES SECTION-----------------------------------------------
 
 # Display restaurant table
-@app.route('https://css1.seattleu.edu/~hnguyen37/templates/restaurants.html')
+@app.route('/restaurants.html')
 def restaurants():
     query = 'SELECT * FROM RESTAURANTS;'
     restaurants_columns, restaurants_table = reusable(query)
@@ -94,7 +94,7 @@ def restaurants():
 
 
 # Display shippers table
-@app.route('https://css1.seattleu.edu/~hnguyen37/templates/shippers.html')
+@app.route('/shippers.html')
 def shippers():
     query = 'SELECT * FROM SHIPPERS;'
     shippers_columns, shippers_table = reusable(query)
@@ -102,7 +102,7 @@ def shippers():
 
 
 # Display customers table
-@app.route('https://css1.seattleu.edu/~hnguyen37/templates/customers.html')
+@app.route('/customers.html')
 def customers():
     query = 'SELECT * FROM CUSTOMERS;'
     customers_columns, customers_table = reusable(query)
@@ -110,7 +110,7 @@ def customers():
 
 
 # Display delivery addresses table
-@app.route('https://css1.seattleu.edu/~hnguyen37/templates/delivery_addresses.html')
+@app.route('/delivery_addresses.html')
 def delivery_addresses():
     query = 'SELECT * FROM DELIVERY_ADDRESSES;'
     delivery_addresses_columns, delivery_addresses_table = reusable(query)
@@ -119,7 +119,7 @@ def delivery_addresses():
 
 
 # Display customer addresses table
-@app.route('https://css1.seattleu.edu/~hnguyen37/templates/customer_addresses.html')
+@app.route('/customer_addresses.html')
 def customer_addresses():
     query = 'SELECT * FROM CUSTOMER_ADDRESSES;'
     customer_addresses_columns, customer_addresses_table = reusable(query)
@@ -128,7 +128,7 @@ def customer_addresses():
 
 
 # Display orders table
-@app.route('https://css1.seattleu.edu/~hnguyen37/templates/orders.html')
+@app.route('/orders.html')
 def orders():
     query = 'SELECT * FROM ORDERS;'
     orders_columns, orders_table = reusable(query)
@@ -140,7 +140,7 @@ def orders():
 
 
 # Display query one table
-@app.route('https://css1.seattleu.edu/~hnguyen37/templates/query_one.html')
+@app.route('/query_one.html')
 def query_one():
     query = "SELECT * FROM CUSTOMERS NATURAL JOIN ORDERS;"
     query_one_columns, query_one_table = reusable(query)
@@ -149,7 +149,7 @@ def query_one():
 
 
 # Display query two table
-@app.route('https://css1.seattleu.edu/~hnguyen37/templates/query_two.html')
+@app.route('/query_two.html')
 def query_two():
     query = """SELECT CUSTOMER_ID, SUM(ORDER_PRICE) AS 'TOTAL_PRICE', COUNT(ORDER_ID) AS 
                'TOTAL_ORDERS' FROM ORDERS GROUP BY CUSTOMER_ID;"""
@@ -159,7 +159,7 @@ def query_two():
 
 
 # Display query three
-@app.route('https://css1.seattleu.edu/~hnguyen37/templates/query_three.html')
+@app.route('/query_three.html')
 def query_three():
     query = "SELECT * FROM ORDERS WHERE ORDER_PRICE > (SELECT AVG(ORDER_PRICE) FROM ORDERS);"
     query_three_columns, query_three_table = reusable(query)
@@ -168,7 +168,7 @@ def query_three():
 
 
 # Display query four table
-@app.route('https://css1.seattleu.edu/~hnguyen37/templates/query_four.html')
+@app.route('/query_four.html')
 def query_four():
     query = """SELECT RESTAURANTS.RESTAURANT_NUM, RESTAURANTS.RESTAURANT_NAME, AVG(RATING) AS 
     'AVERAGE_RATING' FROM ORDERS JOIN RESTAURANTS ON 
@@ -180,7 +180,7 @@ def query_four():
 
 
 # Display query five table
-@app.route('https://css1.seattleu.edu/~hnguyen37/templates/query_five.html')
+@app.route('/query_five.html')
 def query_five():
     query = """SELECT CUSTOMERS.CUSTOMER_ID, CUSTOMERS.CUSTOMER_FNAME, CUSTOMERS.CUSTOMER_LNAME,
                DELIVERY_ADDRESSES.DELIVERY_ADDRESS_NUM, DELIVERY_ADDRESSES.STREET_ADDRESS, 
@@ -244,7 +244,7 @@ def validate_query(query: str) -> bool:
         return False
 
 
-@app.route('https://css1.seattleu.edu/~hnguyen37/templates/adhoc.html', methods=['GET', 'POST'])
+@app.route('/adhoc.html', methods=['GET', 'POST'])
 def submit_query():
     error_message = None
     success_message = None
