@@ -78,7 +78,7 @@ def reusable(query: str):
 
 
 # Our main page
-@app.route('/food_online_system.html')
+@app.route('/')
 def landing_page():
     return render_template("food_online_system.html")
 
