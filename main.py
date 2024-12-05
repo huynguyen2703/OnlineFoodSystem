@@ -106,6 +106,7 @@ def shippers():
 def customers():
     query = 'SELECT * FROM CUSTOMERS;'
     customers_columns, customers_table = reusable(query)
+
     return render_template("customers.html", customers=customers_table, columns=customers_columns)
 
 
