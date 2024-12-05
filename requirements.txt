@@ -1,4 +1,5 @@
 Flask==2.3.3
+psycopg2==2.9.6  # PostgreSQL adapter for Python
 sqlparse==0.4.4
 requests==2.31.0
 gunicorn==21.2.0
