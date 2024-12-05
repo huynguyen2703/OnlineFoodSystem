@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="UTF-8"?><sqlb_project><db path="/Users/nguyenquoctoan/PycharmProjects/FoodOnlineSystem/food_online_system.db" readonly="0" foreign_keys="0" case_sensitive_like="0" temp_store="0" wal_autocheckpoint="1000" synchronous="2"/><attached/><window><main_tabs open="structure browser pragmas query" current="1"/></window><tab_structure><column_width id="0" width="300"/><column_width id="1" width="0"/><column_width id="2" width="100"/><column_width id="3" width="3111"/><column_width id="4" width="0"/><expanded_item id="0" parent="1"/><expanded_item id="1" parent="1"/><expanded_item id="2" parent="1"/><expanded_item id="3" parent="1"/></tab_structure><tab_browse><current_table name="4,6:mainORDERS"/><default_encoding codec=""/><browse_table_settings><table schema="main" name="CUSTOMERS" show_row_id="0" encoding="" plot_x_axis="" unlock_view_pk="_rowid_"><sort/><column_widths><column index="1" value="85"/><column index="2" value="111"/><column index="3" value="111"/><column index="4" value="169"/><column index="5" value="111"/><column index="6" value="146"/><column index="7" value="165"/><column index="8" value="176"/></column_widths><filter_values/><conditional_formats/><row_id_formats/><display_formats/><hidden_columns/><plot_y_axes/><global_filter/></table><table schema="main" name="CUSTOMER_ADDRESSES" show_row_id="0" encoding="" plot_x_axis="" unlock_view_pk="_rowid_"><sort/><column_widths><column index="1" value="85"/><column index="2" value="146"/></column_widths><filter_values/><conditional_formats/><row_id_formats/><display_formats/><hidden_columns/><plot_y_axes/><global_filter/></table><table schema="main" name="DELIVERY_ADDRESSES" show_row_id="0" encoding="" plot_x_axis="" unlock_view_pk="_rowid_"><sort/><column_widths><column index="1" value="146"/><column index="2" value="104"/><column index="3" value="79"/><column index="4" value="41"/><column index="5" value="60"/><column index="6" value="148"/></column_widths><filter_values/><conditional_formats/><row_id_formats/><display_formats/><hidden_columns/><plot_y_axes/><global_filter/></table><table schema="main" name="ORDERS" show_row_id="0" encoding="" plot_x_axis="" unlock_view_pk="_rowid_"><sort/><column_widths><column index="1" value="62"/><column index="2" value="109"/><column index="3" value="85"/><column index="4" value="78"/><column index="5" value="90"/><column index="6" value="92"/><column index="7" value="82"/><column index="8" value="146"/><column index="9" value="130"/><column index="10" value="71"/></column_widths><filter_values/><conditional_formats/><row_id_formats/><display_formats/><hidden_columns/><plot_y_axes/><global_filter/></table><table schema="main" name="RESTAURANTS" show_row_id="0" encoding="" plot_x_axis="" unlock_view_pk="_rowid_"><sort/><column_widths><column index="1" value="109"/><column index="2" value="115"/><column index="3" value="160"/><column index="4" value="109"/><column index="5" value="117"/><column index="6" value="136"/><column index="7" value="110"/><column index="8" value="84"/><column index="9" value="48"/><column index="11" value="170"/><column index="12" value="140"/></column_widths><filter_values/><conditional_formats/><row_id_formats/><display_formats/><hidden_columns/><plot_y_axes/><global_filter/></table><table schema="main" name="SHIPPERS" show_row_id="0" encoding="" plot_x_axis="" unlock_view_pk="_rowid_"><sort/><column_widths><column index="1" value="71"/><column index="2" value="97"/><column index="3" value="97"/><column index="4" value="158"/><column index="5" value="97"/><column index="6" value="127"/><column index="7" value="99"/><column index="8" value="138"/></column_widths><filter_values/><conditional_formats/><row_id_formats/><display_formats/><hidden_columns/><plot_y_axes/><global_filter/></table></browse_table_settings></tab_browse><tab_sql><sql name="SQL 1">-- Create Restaurant Table
+CREATE TABLE IF NOT EXISTS RESTAURANTS (
+    RESTAURANT_NUM INTEGER PRIMARY KEY UNIQUE NOT NULL,
+    RESTAURANT_NAME TEXT,
+    RESTAURANT_STREET_ADDR TEXT,
+    RESTAURANT_CITY TEXT,
+    RESTAURANT_STATE TEXT,
+    RESTAURANT_ZIP_CODE TEXT,
+    CONTACT_NUMBER TEXT,
+    CUISINE_TYPE TEXT,
+    RATING REAL,
+    OPENING_HOURS TEXT,
+    MENU_LINK TEXT,
+    RESTAURANT_WEBSITE TEXT
+);
+
+-- Create Shipper Table
+CREATE TABLE IF NOT EXISTS SHIPPERS (
+    SHIPPER_ID INTEGER PRIMARY KEY UNIQUE NOT NULL,
+    SHIPPER_LNAME TEXT,
+    SHIPPER_FNAME TEXT,
+    SHIPPER_EMAIL TEXT,
+    SHIPPER_PHONE TEXT,
+    SHIPPER_START_DATE TEXT,
+    SHIPPER_RATING REAL,
+    SHIPPER_WORK_STATUS TEXT
+);
+
+-- Create Customers Table
+CREATE TABLE IF NOT EXISTS CUSTOMERS (
+    CUSTOMER_ID INTEGER PRIMARY KEY UNIQUE NOT NULL,
+    CUSTOMER_LNAME TEXT,
+    CUSTOMER_FNAME TEXT,
+    CUSTOMER_EMAIL TEXT,
+    CUSTOMER_PHONE TEXT,
+    CUSTOMER_JOINED_DATE TEXT,
+    CUSTOMER_LOYALTY_POINTS INTEGER,
+    CUSTOMER_PAYMENT_METHOD TEXT
+);
+
+-- Create Deliver_Addresses Table
+CREATE TABLE IF NOT EXISTS DELIVERY_ADDRESSES (
+    DELIVERY_ADDRESS_NUM INTEGER PRIMARY KEY UNIQUE NOT NULL,
+    STREET_ADDRESS TEXT,
+    CITY TEXT,
+    STATE TEXT,
+    ZIP_CODE TEXT,
+    LOCATION_INSTRUCTIONS TEXT
+);
+
+-- Create Customer_Addresses Junction Table
+CREATE TABLE CUSTOMER_ADDRESSES (
+    CUSTOMER_ID INTEGER,
+    DELIVERY_ADDRESS_NUM INTEGER,
+    FOREIGN KEY (CUSTOMER_ID) REFERENCES CUSTOMERS(CUSTOMER_ID),
+    FOREIGN KEY (DELIVERY_ADDRESS_NUM) REFERENCES DELIVERY_ADDRESSES(DELIVERY_ADDRESS_NUM)
+);
+
+
+-- Create Orders Table
+CREATE TABLE ORDERS (
+    ORDER_ID INTEGER PRIMARY KEY,
+    RESTAURANT_NUM INTEGER,
+    CUSTOMER_ID INTEGER,
+    ORDER_DATE TEXT,
+    DELIVERY_TIME TEXT,
+    ORDER_STATUS TEXT,
+    ORDER_PRICE REAL,
+    DELIVERY_ADDRESS_NUM INTEGER,
+    ORDER_INSTRUCTIONS TEXT,
+    SHIPPER_ID INTEGER,
+    FOREIGN KEY (CUSTOMER_ID) REFERENCES CUSTOMERS(CUSTOMER_ID),
+    FOREIGN KEY (SHIPPER_ID) REFERENCES SHIPPERS(SHIPPER_ID),
+    FOREIGN KEY (RESTAURANT_NUM) REFERENCES RESTAURANTS(RESTAURANT_NUM),
+    FOREIGN KEY (DELIVERY_ADDRESS_NUM) REFERENCES DELIVERY_ADDRESSES(DELIVERY_ADDRESS_NUM)
+);
+
+
+-- Insert entries into Restaurant
+INSERT INTO RESTAURANTS (RESTAURANT_NUM, RESTAURANT_NAME, RESTAURANT_STREET_ADDR, RESTAURANT_CITY, RESTAURANT_STATE, RESTAURANT_ZIP_CODE, CONTACT_NUMBER, CUISINE_TYPE, RATING, OPENING_HOURS, MENU_LINK, RESTAURANT_WEBSITE)
+VALUES
+(1, 'Pasta Palace', '123 Main St', 'New York', 'NY', '10001', '1234567890', 'Italian', 4.5, '10 AM - 10 PM', 'https://pastapalace.com/menu', 'https://pastapalace.com'),
+(2, 'Burger Barn', '456 Elm St', 'Los Angeles', 'CA', '90001', '0987654321', 'American', 4.2, '11 AM - 11 PM', 'https://burgerbarn.com/menu', 'https://burgerbarn.com'),
+(3, 'Sushi Stop', '789 Oak St', 'Seattle', 'WA', '98101', '1122334455', 'Japanese', 4.8, '12 PM - 10 PM', 'https://sushistop.com/menu', 'https://sushistop.com'),
+(4, 'Taco Town', '321 Pine St', 'Austin', 'TX', '73301', '2233445566', 'Mexican', 4.3, '9 AM - 9 PM', 'https://tacotown.com/menu', 'https://tacotown.com'),
+(5, 'Curry Corner', '654 Maple St', 'Chicago', 'IL', '60601', '3344556677', 'Indian', 4.6, '10 AM - 10 PM', 'https://currycorner.com/menu', 'https://currycorner.com'),
+(6, 'Dim Sum Delight', '987 Cedar St', 'San Francisco', 'CA', '94101', '4455667788', 'Chinese', 4.7, '10 AM - 10 PM', 'https://dimsumdelight.com/menu', 'https://dimsumdelight.com'),
+(7, 'Steak House', '432 Birch St', 'Miami', 'FL', '33101', '5566778899', 'Steakhouse', 4.4, '12 PM - 12 AM', 'https://steakhouse.com/menu', 'https://steakhouse.com'),
+(8, 'Pizza Place', '876 Spruce St', 'Portland', 'OR', '97201', '6677889900', 'Italian', 4.0, '11 AM - 11 PM', 'https://pizzaplace.com/menu', 'https://pizzaplace.com'),
+(9, 'Vegan Venue', '543 Redwood St', 'Denver', 'CO', '80201', '7788990011', 'Vegan', 4.9, '10 AM - 8 PM', 'https://veganvenue.com/menu', 'https://veganvenue.com'),
+(10, 'BBQ Bistro', '210 Palm St', 'Dallas', 'TX', '75201', '8899001122', 'BBQ', 4.5, '11 AM - 10 PM', 'https://bbqbistro.com/menu', 'https://bbqbistro.com');
+
+-- Insert entries into Shipper
+INSERT INTO SHIPPERS (SHIPPER_ID, SHIPPER_LNAME, SHIPPER_FNAME, SHIPPER_EMAIL, SHIPPER_PHONE, SHIPPER_START_DATE, SHIPPER_RATING, SHIPPER_WORK_STATUS)
+VALUES
+(1, 'Smith', 'John', 'john.smith@shipper.com', '1234567890', '2023-01-01', 4.5, 'Active'),
+(2, 'Johnson', 'Emily', 'emily.johnson@shipper.com', '0987654321', '2022-02-02', 4.2, 'Active'),
+(3, 'Williams', 'Michael', 'michael.williams@shipper.com', '1122334455', '2021-03-03', 4.8, 'Inactive'),
+(4, 'Brown', 'Sarah', 'sarah.brown@shipper.com', '2233445566', '2023-04-04', 4.3, 'Active'),
+(5, 'Jones', 'David', 'david.jones@shipper.com', '3344556677', '2020-05-05', 4.6, 'Active'),
+(6, 'Garcia', 'Linda', 'linda.garcia@shipper.com', '4455667788', '2022-06-06', 4.7, 'Active'),
+(7, 'Martinez', 'Robert', 'robert.martinez@shipper.com', '5566778899', '2021-07-07', 4.4, 'Inactive'),
+(8, 'Davis', 'Jessica', 'jessica.davis@shipper.com', '6677889900', '2023-08-08', 4.0, 'Active'),
+(9, 'Lopez', 'Daniel', 'daniel.lopez@shipper.com', '7788990011', '2022-09-09', 4.9, 'Active'),
+(10, 'Gonzalez', 'Sophia', 'sophia.gonzalez@shipper.com', '8899001122', '2021-10-10', 4.5, 'Inactive');
+
+-- Insert entries into Customers
+INSERT INTO CUSTOMERS (CUSTOMER_ID, CUSTOMER_LNAME, CUSTOMER_FNAME, CUSTOMER_EMAIL, CUSTOMER_PHONE, CUSTOMER_JOINED_DATE, CUSTOMER_PASSWORD, CUSTOMER_LOYALTY_POINTS, CUSTOMER_PAYMENT_METHOD)
+VALUES
+(1, 'Clark', 'Thomas', 'thomas.clark@customer.com', '1234567890', '2023-01-01', 100, 'Credit Card'),
+(2, 'Walker', 'Ashley', 'ashley.walker@customer.com', '0987654321', '2022-02-02', 200, 'PayPal'),
+(3, 'Allen', 'Christopher', 'christopher.allen@customer.com', '1122334455', '2021-03-03', 150, 'Credit Card'),
+(4, 'King', 'Patricia', 'patricia.king@customer.com', '2233445566', '2023-04-04',  250, 'Debit Card'),
+(5, 'Young', 'Elizabeth', 'elizabeth.young@customer.com', '3344556677', '2020-05-05', 300, 'Credit Card'),
+(6, 'Scott', 'Matthew', 'matthew.scott@customer.com', '4455667788', '2022-06-06', 400, 'Apple Pay'),
+(7, 'Green', 'Sandra', 'sandra.green@customer.com', '5566778899', '2021-07-07', 50, 'Credit Card'),
+(8, 'Adams', 'Daniel', 'daniel.adams@customer.com', '6677889900', '2023-08-08', 350, 'Debit Card'),
+(9, 'Baker', 'Grace', 'grace.baker@customer.com', '7788990011', '2022-09-09',  500, 'PayPal'),
+(10, 'Nelson', 'Oliver', 'oliver.nelson@customer.com', '8899001122', '2021-10-10', 600, 'Credit Card');
+
+-- Insert entries into Delivery Address
+INSERT INTO DELIVERY_ADDRESSES (DELIVERY_ADDRESS_NUM, STREET_ADDRESS, CITY, STATE, ZIP_CODE, LOCATION_INSTRUCTIONS)
+VALUES
+(1, '123 Main St', 'New York', 'NY', '10001', 'Near the fountain'),
+(2, '456 Elm St', 'Los Angeles', 'CA', '90001', 'Leave at the door'),
+(3, '789 Oak St', 'Seattle', 'WA', '98101', 'Ring the bell'),
+(4, '321 Pine St', 'Austin', 'TX', '73301', 'Left side of the house'),
+(5, '654 Maple St', 'Chicago', 'IL', '60601', 'Near the garage'),
+(6, '987 Cedar St', 'San Francisco', 'CA', '94101', 'On the porch'),
+(7, '432 Birch St', 'Miami', 'FL', '33101', 'Behind the house'),
+(8, '876 Spruce St', 'Portland', 'OR', '97201', 'On the balcony'),
+(9, '543 Redwood St', 'Denver', 'CO', '80201', 'Near the mailbox'),
+(10, '210 Palm St', 'Dallas', 'TX', '75201', 'At the front gate');
+
+-- Insert entries into Customer_Addresses
+INSERT INTO CUSTOMER_ADDRESSES (CUSTOMER_ID, DELIVERY_ADDRESS_NUM)
+VALUES
+(1, 1),
+(2, 2),
+(3, 3),
+(4, 4),
+(5, 5),
+(6, 6),
+(7, 7),
+(8, 8),
+(9, 9),
+(10, 10);
+
+-- Insert entries into Orders
+INSERT INTO ORDERS (ORDER_ID, RESTAURANT_NUM, CUSTOMER_ID, ORDER_DATE, DELIVERY_TIME, ORDER_STATUS, ORDER_PRICE, DELIVERY_ADDRESS_NUM, ORDER_INSTRUCTIONS, SHIPPER_ID)
+VALUES
+(1, 1, 1, '2023-01-01', '12:00 PM', 'Delivered', 20.50, 1, 'No onions', 1),
+(2, 2, 2, '2022-02-02', '1:00 PM', 'Pending', 15.75, 2, 'Extra cheese', 2),
+(3, 3, 3, '2021-03-03', '2:00 PM', 'Delivered', 25.25, 3, 'Spicy', 3),
+(4, 4, 4, '2023-04-04', '3:00 PM', 'Canceled', 18.00, 4, 'No cilantro', 4),
+(5, 5, 5, '2020-05-05', '4:00 PM', 'Delivered', 22.00, 5, 'No yogurt', 5),
+(6, 6, 6, '2022-06-06', '5:00 PM', 'Pending', 19.00, 6, 'Extra tofu', 6),
+(7, 7, 7, '2021-07-07', '6:00 PM', 'Delivered', 30.50, 7, 'Well done', 7),
+(8, 8, 8, '2023-08-08', '7:00 PM', 'Delivered', 17.25, 8, 'Extra toppings', 8),
+(9, 9, 9, '2022-09-09', '8:00 PM', 'Pending', 23.75, 9, 'No peanuts', 9),
+(10, 10, 10, '2021-10-10', '9:00 PM', 'Delivered', 28.00, 10, 'No salt', 10);
+
+PRAGMA foreign_keys = OFF;
+
+SELECT * FROM RESTAURANTS;
+SELECT * FROM SHIPPERS;
+SELECT * FROM CUSTOMERS;
+SELECT * FROM DELIVERY_ADDRESSES;
+SELECT * FROM CUSTOMER_ADDRESSES;
+SELECT * FROM ORDERS;
+
+DROP TABLE IF EXISTS CUSTOMERS;
+
+
+ALTER TABLE CUSTOMERS_NEW RENAME TO CUSTOMERS;
+
+</sql><current_tab id="0"/></tab_sql></sqlb_project>

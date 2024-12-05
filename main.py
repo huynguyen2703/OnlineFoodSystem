@@ -5,8 +5,7 @@
 from flask import Flask, render_template, url_for, redirect
 from flask import request
 import os
-import mysql.connector
-from mysql.connector import errorcode
+import sqlite3
 import sqlparse
 import requests
 import logging
@@ -15,11 +14,12 @@ import re
 # Create flask application to manage routes
 app = Flask(__name__)
 
+
 # Define database configurations to connect to MySQL database
-server_name = os.environ['SERVER_NAME']
-username = os.environ['USER_NAME']
-password = os.environ['PASSWORD']
-db_name = os.environ['DB_NAME']
+# server_name = os.environ['SERVER_NAME']
+# username = os.environ['USER_NAME']
+# password = os.environ['PASSWORD']
+# db_name = os.environ['DB_NAME']
 
 # server_name = '127.0.0.1'
 # username = 'root'
@@ -40,11 +40,7 @@ def reusable(query: str):
     connection = None
     cursor = None
     try:
-        connection = mysql.connector.connect(
-            host=server_name,
-            user=username,
-            password=password,
-            database=db_name)
+        connection = sqlite3.connect('food_online_system.db')
 
         print("Connected Successfully")
 
@@ -61,15 +57,8 @@ def reusable(query: str):
         else:
             connection.commit()
             return cursor.rowcount
-
-    except mysql.connector.Error as err:
-        if err.errno == errorcode.ER_ACCESS_DENIED_ERROR:
-            print("Something is wrong with your user name or password")
-        elif err.errno == errorcode.ER_BAD_DB_ERROR:
-            print("Database does not exist")
-        else:
-            print(err)
-        return []
+    except sqlite3.Error as e:
+        print(f"SQLite error: {e}")
     finally:
         if cursor:
             cursor.close()
@@ -143,7 +132,7 @@ def orders():
 # Display query one table
 @app.route('/query_one.html')
 def query_one():
-    query = "SELECT * FROM CUSTOMERS NATURAL JOIN ORDERS;"
+    query = "SELECT * FROM CUSTOMERS INNER JOIN ORDERS ON CUSTOMERS.CUSTOMER_ID = ORDERS.CUSTOMER_ID;"
     query_one_columns, query_one_table = reusable(query)
     return render_template("query_one.html", query_one=query_one_table,
                            columns=query_one_columns)
@@ -152,8 +141,8 @@ def query_one():
 # Display query two table
 @app.route('/query_two.html')
 def query_two():
-    query = """SELECT CUSTOMER_ID, SUM(ORDER_PRICE) AS 'TOTAL_PRICE', COUNT(ORDER_ID) AS 
-               'TOTAL_ORDERS' FROM ORDERS GROUP BY CUSTOMER_ID;"""
+    query = """SELECT CUSTOMER_ID, SUM(ORDER_PRICE) AS 'TOTAL_PRICE', COUNT(ORDER_ID) AS 'TOTAL_ORDERS' FROM ORDERS
+               GROUP BY CUSTOMER_ID;"""
     query_two_columns, query_two_table = reusable(query)
     return render_template("query_two.html", query_two=query_two_table,
                            columns=query_two_columns)
@@ -162,7 +151,7 @@ def query_two():
 # Display query three
 @app.route('/query_three.html')
 def query_three():
-    query = "SELECT * FROM ORDERS WHERE ORDER_PRICE > (SELECT AVG(ORDER_PRICE) FROM ORDERS);"
+    query = "SELECT * FROM ORDERS WHERE ORDER_PRICE > (SELECT AVG(ORDER_PRICE) FROM ORDERS)ORDER BY ORDER_PRICE DESC;"
     query_three_columns, query_three_table = reusable(query)
     return render_template("query_three.html", query_three=query_three_table,
                            columns=query_three_columns)
@@ -171,10 +160,11 @@ def query_three():
 # Display query four table
 @app.route('/query_four.html')
 def query_four():
-    query = """SELECT RESTAURANTS.RESTAURANT_NUM, RESTAURANTS.RESTAURANT_NAME, AVG(RATING) AS 
-    'AVERAGE_RATING' FROM ORDERS JOIN RESTAURANTS ON 
-    ORDERS.RESTAURANT_NUM = RESTAURANTS.RESTAURANT_NUM GROUP BY RESTAURANTS.RESTAURANT_NUM,RESTAURANTS.RESTAURANT_NAME
-    HAVING COUNT(ORDERS.ORDER_ID) > 5;"""
+    query = """SELECT RESTAURANTS.RESTAURANT_NUM, RESTAURANTS.RESTAURANT_NAME, AVG(RATING) AS 'AVERAGE_RATING' 
+               FROM ORDERS
+               JOIN RESTAURANTS ON ORDERS.RESTAURANT_NUM = RESTAURANTS.RESTAURANT_NUM
+               GROUP BY RESTAURANTS.RESTAURANT_NUM, RESTAURANTS.RESTAURANT_NAME
+               HAVING COUNT(ORDERS.ORDER_ID) > 5;"""
     query_four_columns, query_four_table = reusable(query)
     return render_template("query_four.html", query_four=query_four_table,
                            columns=query_four_columns)
@@ -187,15 +177,16 @@ def query_five():
                DELIVERY_ADDRESSES.DELIVERY_ADDRESS_NUM, DELIVERY_ADDRESSES.STREET_ADDRESS, 
                DELIVERY_ADDRESSES.CITY, DELIVERY_ADDRESSES.STATE, DELIVERY_ADDRESSES.ZIP_CODE, 
                DELIVERY_ADDRESSES.LOCATION_INSTRUCTIONS
-               FROM CUSTOMERS LEFT JOIN CUSTOMER_ADDRESSES ON CUSTOMERS.CUSTOMER_ID = CUSTOMER_ADDRESSES.CUSTOMER_ID
-               LEFT JOIN DELIVERY_ADDRESSES ON 
-               CUSTOMER_ADDRESSES.DELIVERY_ADDRESS_NUM = DELIVERY_ADDRESSES.DELIVERY_ADDRESS_NUM;"""
+               FROM CUSTOMERS
+               LEFT JOIN CUSTOMER_ADDRESSES ON CUSTOMERS.CUSTOMER_ID = CUSTOMER_ADDRESSES.CUSTOMER_ID
+               LEFT JOIN DELIVERY_ADDRESSES ON CUSTOMER_ADDRESSES.DELIVERY_ADDRESS_NUM = DELIVERY_ADDRESSES.DELIVERY_ADDRESS_NUM;"""
     query_five_columns, query_five_table = reusable(query)
     return render_template("query_five.html", query_five=query_five_table,
                            columns=query_five_columns)
 
 
 # --------------------------------------------------AD_HOC QUERY SECTION------------------------------------------------
+
 def validate_query(query: str) -> bool:
     try:
         # Step 1: Remove single-line and multi-line comments
@@ -207,6 +198,7 @@ def validate_query(query: str) -> bool:
 
         # Step 2: Check if the query is empty after cleaning
         if not query:
+            logging.error("Query is empty after comment removal.")
             return False
 
         # Step 3: Parse the cleaned query using sqlparse
@@ -214,22 +206,24 @@ def validate_query(query: str) -> bool:
 
         # Step 4: Check if the parsed query has valid tokens
         if not parsed_query or not parsed_query[0].tokens:
+            logging.error("No valid tokens found after parsing the query.")
             return False
 
-        # Step 5: Define the valid SQL keywords
-        sql_keywords = ['SELECT', 'INSERT', 'CREATE', 'UPDATE', 'DELETE', 'DROP']
+        # Step 5: Define the valid SQL keywords (common to SQLite)
+        sql_keywords = ['SELECT', 'INSERT', 'CREATE', 'UPDATE', 'DELETE', 'DROP', 'ALTER']
 
         # Step 6: Get the first meaningful token (strip out irrelevant tokens)
-        # Skip any non-SQL tokens such as whitespaces
         for token in parsed_query[0].tokens:
             if token.value.strip():  # First non-empty token
                 first_token = token
                 break
         else:
+            logging.error("No valid tokens found in query.")
             return False  # No valid tokens found
 
         # Step 7: Check if the first token is one of the valid SQL keywords (case-insensitive)
         if first_token.value.strip().upper() not in sql_keywords:
+            logging.error(f"First token '{first_token.value.strip()}' is not a valid SQL keyword.")
             return False
 
         return True
@@ -251,22 +245,31 @@ def submit_query():
     success_message = None
     columns = []
     results = []
+
     if request.method == 'POST':
         user_input = request.form['user_input']
         user_query = user_input.strip()
 
+        # Validate SQL query
         if not validate_query(user_query):
             error_message = "Invalid SQL query. Please try again."
         else:
             try:
                 if user_query.upper().startswith('SELECT'):
+                    # Handle SELECT query by fetching columns and results
                     columns, results = reusable(user_query)
                 else:
+                    # Execute non-SELECT queries (no need to store columns/results)
                     reusable(user_query)
-                success_message = "Query executed successfully"
+                    success_message = "Query executed successfully"
+
             except Exception as e:
+                # Catch specific errors (e.g., database errors, SQL errors)
+                logging.error(f"Error executing query: {str(e)}")
                 error_message = f"An error occurred: {str(e)}"
-    return render_template("adhoc.html", columns=columns, adhoc_query=results, success=success_message, error=error_message)
+
+    return render_template("adhoc.html", columns=columns, adhoc_query=results, success=success_message,
+                           error=error_message)
 
 
 # ----------------------------------------------------------------------------------------------------------------------
