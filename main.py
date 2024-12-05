@@ -78,9 +78,9 @@ def reusable(query: str):
 
 
 # Our main page
-@app.route('/')
+@app.route('/food_online_system.html')
 def landing_page():
-    return render_template("food_online_system.html")
+    return render_template("https://css1.seattleu.edu/~hnguyen37/templates/food_online_system.html")
 
 
 # -----------------------------------------------DISPLAY ENTITIES SECTION-----------------------------------------------
@@ -90,28 +90,7 @@ def landing_page():
 def restaurants():
     query = 'SELECT * FROM RESTAURANTS;'
     restaurants_columns, restaurants_table = reusable(query)
-
-    html = "<!DOCTYPE html><html lang='en'><head><meta charset='UTF-8'><title>Restaurants Table</title><link rel='stylesheet' href='/static/tables.css'></head><body>"
-    html += "<section><h1>Food Online System</h1><div class='table-container'><table class='table-center' id='restaurant'>"
-
-    # Add table headers (columns)
-    html += "<thead><tr>"
-    for column in restaurants_columns:
-        html += f"<th>{column}</th>"
-    html += "</tr></thead><tbody>"
-
-    # Add table rows (restaurant data)
-    for restaurant in restaurants_table:
-        html += "<tr>"
-        for data in restaurant:
-            html += f"<td>{data if data is not None else 'N/A'}</td>"
-        html += "</tr>"
-
-    html += "</tbody></table></div></section></body></html>"
-
-    # Return the generated HTML response
-    return html
-    # return render_template("restaurants.html", restaurants=restaurants_table, columns=restaurants_columns)
+    return render_template("https://css1.seattleu.edu/~hnguyen37/templates/restaurants.html", restaurants=restaurants_table, columns=restaurants_columns)
 
 
 # Display shippers table
@@ -120,7 +99,7 @@ def shippers():
     query = 'SELECT * FROM SHIPPERS;'
     shippers_columns, shippers_table = reusable(query)
 
-    html = "<!DOCTYPE html><html lang='en'><head><meta charset='UTF-8'><title>Shippers Table</title><link rel='stylesheet' href='/static/tables.css'></head><body>"
+    html = "<!DOCTYPE html><html lang='en'><head><meta charset='UTF-8'><title>Shippers Table</title><link rel='stylesheet' href='https://css1.seattleu.edu/~hnguyen37/static/tables.css'></head><body>"
     html += "<section><h1>Food Online System</h1><div class='table-container'><table class='table-center'>"
 
     # Add table headers (columns)
@@ -149,7 +128,7 @@ def customers():
     query = 'SELECT * FROM CUSTOMERS;'
     customers_columns, customers_table = reusable(query)
 
-    html = "<!DOCTYPE html><html lang='en'><head><meta charset='UTF-8'><title>Customers Table</title><link rel='stylesheet' href='/static/tables.css'></head><body>"
+    html = "<!DOCTYPE html><html lang='en'><head><meta charset='UTF-8'><title>Customers Table</title><link rel='stylesheet' href='https://css1.seattleu.edu/~hnguyen37/static/tables.css'></head><body>"
     html += "<section><h1>Food Online System</h1><div class='table-container'><table class='table-center'>"
 
     # Add table headers (columns)
@@ -178,7 +157,7 @@ def delivery_addresses():
     query = 'SELECT * FROM DELIVERY_ADDRESSES;'
     delivery_addresses_columns, delivery_addresses_table = reusable(query)
 
-    html = "<!DOCTYPE html><html lang='en'><head><meta charset='UTF-8'><title>Delivery Addresses Table</title><link rel='stylesheet' href='/static/tables.css'></head><body>"
+    html = "<!DOCTYPE html><html lang='en'><head><meta charset='UTF-8'><title>Delivery Addresses Table</title><link rel='stylesheet' href='https://css1.seattleu.edu/~hnguyen37/static/tables.css'></head><body>"
     html += "<section><h1>Food Online System</h1><div class='table-container'><table class='table-center'>"
 
     # Add table headers (columns)
@@ -210,7 +189,7 @@ def customer_addresses():
     query = 'SELECT * FROM CUSTOMER_ADDRESSES;'
     customer_addresses_columns, customer_addresses_table = reusable(query)
 
-    html = "<!DOCTYPE html><html lang='en'><head><meta charset='UTF-8'><title>Customer Addresses Table</title><link rel='stylesheet' href='/static/tables.css'></head><body>"
+    html = "<!DOCTYPE html><html lang='en'><head><meta charset='UTF-8'><title>Customer Addresses Table</title><link rel='stylesheet' href='https://css1.seattleu.edu/~hnguyen37/static/tables.css'></head><body>"
     html += "<section><h1>Food Online System</h1><div class='table-container'><table class='table-center'>"
 
     # Add table headers (columns)
@@ -240,7 +219,7 @@ def orders():
     query = 'SELECT * FROM ORDERS;'
     orders_columns, orders_table = reusable(query)
 
-    html = "<!DOCTYPE html><html lang='en'><head><meta charset='UTF-8'><title>Shippers Table</title><link rel='stylesheet' href='/static/tables.css'></head><body>"
+    html = "<!DOCTYPE html><html lang='en'><head><meta charset='UTF-8'><title>Shippers Table</title><link rel='stylesheet' href='https://css1.seattleu.edu/~hnguyen37/static/tables.css'></head><body>"
     html += "<section><h1>Food Online System</h1><div class='table-container'><table class='table-center'>"
 
     # Add table headers (columns)
@@ -273,7 +252,7 @@ def query_one():
     query = "SELECT * FROM CUSTOMERS NATURAL JOIN ORDERS;"
     query_one_columns, query_one_table = reusable(query)
 
-    html = "<!DOCTYPE html><html lang='en'><head><meta charset='UTF-8'><title>Query One Table</title><link rel='stylesheet' href='/static/tables.css'></head><body>"
+    html = "<!DOCTYPE html><html lang='en'><head><meta charset='UTF-8'><title>Query One Table</title><link rel='stylesheet' href='https://css1.seattleu.edu/~hnguyen37/static/tables.css'></head><body>"
     html += "<section><h1>Food Online System</h1><div class='table-container'><table class='table-center' id='query-one'>"
 
     # Add table headers (columns)
@@ -304,7 +283,7 @@ def query_two():
                'TOTAL_ORDERS' FROM ORDERS GROUP BY CUSTOMER_ID;"""
     query_two_columns, query_two_table = reusable(query)
 
-    html = "<!DOCTYPE html><html lang='en'><head><meta charset='UTF-8'><title>Query Two Table</title><link rel='stylesheet' href='/static/tables.css'></head><body>"
+    html = "<!DOCTYPE html><html lang='en'><head><meta charset='UTF-8'><title>Query Two Table</title><link rel='stylesheet' href='https://css1.seattleu.edu/~hnguyen37/static/tables.css'></head><body>"
     html += "<section><h1>Food Online System</h1><div class='table-container'><table class='table-center'>"
 
     # Add table headers (columns)
@@ -334,7 +313,7 @@ def query_three():
     query = "SELECT * FROM ORDERS WHERE ORDER_PRICE > (SELECT AVG(ORDER_PRICE) FROM ORDERS);"
     query_three_columns, query_three_table = reusable(query)
 
-    html = "<!DOCTYPE html><html lang='en'><head><meta charset='UTF-8'><title>Query Three Table</title><link rel='stylesheet' href='/static/tables.css'></head><body>"
+    html = "<!DOCTYPE html><html lang='en'><head><meta charset='UTF-8'><title>Query Three Table</title><link rel='stylesheet' href='https://css1.seattleu.edu/~hnguyen37/static/tables.css'></head><body>"
     html += "<section><h1>Food Online System</h1><div class='table-container'><table class='table-center'>"
 
     # Add table headers (columns)
@@ -367,7 +346,7 @@ def query_four():
     HAVING COUNT(ORDERS.ORDER_ID) > 5;"""
     query_four_columns, query_four_table = reusable(query)
 
-    html = "<!DOCTYPE html><html lang='en'><head><meta charset='UTF-8'><title>Query One Table</title><link rel='stylesheet' href='/static/tables.css'></head><body>"
+    html = "<!DOCTYPE html><html lang='en'><head><meta charset='UTF-8'><title>Query One Table</title><link rel='stylesheet' href='https://css1.seattleu.edu/~hnguyen37/static/tables.css'></head><body>"
     html += "<section><h1>Food Online System</h1><div class='table-container'><table class='table-center' id='query-one'>"
 
     # Add table headers (columns)
@@ -403,7 +382,7 @@ def query_five():
                CUSTOMER_ADDRESSES.DELIVERY_ADDRESS_NUM = DELIVERY_ADDRESSES.DELIVERY_ADDRESS_NUM;"""
     query_five_columns, query_five_table = reusable(query)
 
-    html = "<!DOCTYPE html><html lang='en'><head><meta charset='UTF-8'><title>Query Five Table</title><link rel='stylesheet' href='/static/tables.css'></head><body>"
+    html = "<!DOCTYPE html><html lang='en'><head><meta charset='UTF-8'><title>Query Five Table</title><link rel='stylesheet' href='https://css1.seattleu.edu/~hnguyen37/static/tables.css'></head><body>"
     html += "<section><h1>Food Online System</h1><div class='table-container'><table class='table-center'>"
 
     # Add table headers (columns)
@@ -499,7 +478,7 @@ def submit_query():
             except Exception as e:
                 error_message = f"An error occurred: {str(e)}"
 
-    html = "<!DOCTYPE html><html lang='en'><head><meta charset='UTF-8'><title>Adhoc Query</title><link rel='stylesheet' href='/static/tables.css'></head><body>"
+    html = "<!DOCTYPE html><html lang='en'><head><meta charset='UTF-8'><title>Adhoc Query</title><link rel='stylesheet' href='https://css1.seattleu.edu/~hnguyen37/static/tables.css'></head><body>"
     html += "<section><h1>Food Online System</h1>"
 
     # Display an error message if any
